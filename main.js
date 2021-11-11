@@ -1,6 +1,6 @@
 // TODO importa því sem nota þarf
 import { fetchNews, NEWS_API } from './lib/news.js';
-import { fetchAndRenderCategory, fetchAndRenderLists } from './lib/ui.js';
+import { createCategoryBackLink, fetchAndRenderCategory, fetchAndRenderLists } from './lib/ui.js';
 import { empty, el } from './lib/helpers.js';
 
 /** Fjöldi frétta til að birta á forsíðu */
@@ -17,13 +17,14 @@ const main = document.querySelector('main');
 function route() {
   // Athugum hvort það sé verið að biðja um category í URL, t.d.
 
-  console.log(window.location.search);
 
   const stadsetning = new URLSearchParams(window.location.search);
   const nystadsetning = stadsetning.get('category');
 
   if (nystadsetning) {
-    fetchAndRenderCategory(nystadsetning, main);
+    const backlink = createCategoryBackLink(main, CATEGORY_ITEMS_ON_FRONTPAGE);
+
+    fetchAndRenderCategory(nystadsetning, main, backlink);
   } else {
     fetchAndRenderLists(main, CATEGORY_ITEMS_ON_FRONTPAGE);
   }
